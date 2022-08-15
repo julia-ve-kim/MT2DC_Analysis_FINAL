@@ -28,7 +28,7 @@ num_alpha = len(np.linspace(0, 1, 21))
 ##############################################
 ROOT.gStyle.SetTitleFontSize(0.05)
 ROOT.gStyle.SetPalette(1)
-ROOT.gStyle.SetOptStat(0)
+#ROOT.gStyle.SetOptStat(0)
  
 h2_muT2dc = ROOT.TH2F("h2_muT2dc", "muT2dc; #alpha; muT2dc", num_alpha, 0, 1+1/num_alpha, 100, 0, 2) 
 h2_muT2dc_UC = ROOT.TH2F("h2_muT2dc_UC", "muT2dc_UC; #alpha; muT2dc_UC", num_alpha, 0, 1+1/num_alpha, 100, 0, 2) 
@@ -45,8 +45,9 @@ h2_muT2prime_t_UC = ROOT.TH2F("h2_muT2prime_t_UC","muT2prime_t; #alpha; muT2prim
 #h2_muT2prime_t_subC = ROOT.TH2F("h2_muT2prime_t_subC", "#mbox{m_{T2}}(t|#alpha, [#mbox{pT_{c}>20, m_{T2}<1]})'; #mbox{m_{T2}}(t|#alpha, [#mbox{pT_{c}>20, m_{T2}<1]})' [GeV]; Number of entries / 1 GeV", num_alpha, 0, 1+1/num_alpha, 100, 0, 100)
 #h2_muT2prime_t_subUC = ROOT.TH2F("h2_muT2prime_t_subUC", "#mbox{m_{T2}}(t|#alpha, [#mbox{pT_{c}=0, m_{T2}<1]})'; #mbox{m_{T2}}(t|#alpha, [#mbox{pT_{c}=0, m_{T2}<1]})' [GeV]; Number of entries / 1 GeV", num_alpha, 0, 1+1/num_alpha, 100, 0, 100)
 
-h2_mT2prime_W = ROOT.TH2F("h2_mT2prime_W","mT2prime_W; alpha; mT2prime_W", num_alpha, 0, 1, 300, 0, 300)
-h2_mT2prime_W_UC = ROOT.TH2F("h2_mT2prime_W_UC","mT2prime_W_UC; alpha; mT2prime_W_UC", num_alpha, 0, 1, 300, 0, 300) 
+# omit bins at small x's in order to get rid of spike at 0 
+h2_mT2prime_W = ROOT.TH2F("h2_mT2prime_W","mT2prime_W; alpha; mT2prime_W", num_alpha, 0, 1+1/num_alpha, 250, 40, 200)
+h2_mT2prime_W_UC = ROOT.TH2F("h2_mT2prime_W_UC","mT2prime_W_UC; alpha; mT2prime_W_UC", num_alpha, 0, 1+1/num_alpha, 250, 40, 200) 
 
 h2_mT2dc_diff = ROOT.TH2F("h2_mT2dc_diff","mT2dc_diff; #alpha; mT2dc_diff [GeV]", num_alpha, 0, 1+1/num_alpha, 200, -100, 100) 
 h2_mT2dc_diff_UC = ROOT.TH2F("h2_mT2dc_diff_UC","mT2dc_diff_UC; #alpha; mT2dc_diff_UC [GeV]", num_alpha, 0, 1+1/num_alpha, 200, -100, 100) 
@@ -90,7 +91,7 @@ for i in range(nentries):
         h2_sub_pT_min_over_met.Fill(t.alpha, t.sub_pT_min_over_met) 
         
     #elif (t.constraint_pT_cut == 0 or t.constraint_pT_subcut == 0) and t.success==1:
-    elif t.constraint_pT_cut == 20 and t.success==1: 
+    elif t.constraint_pT_cut == 0 and t.success==1: 
         h2_muT2dc_UC.Fill(t.alpha, t.mT2dc/(t.alpha*m_W + (1-t.alpha)*m_t)) 
         h2_muT2prime_W_UC.Fill(t.alpha, t.mT2prime_W/m_W) 
         #h2_muT2prime_W_subUC.Fill(t.alpha, t.mT2prime_W_subC/m_W)
